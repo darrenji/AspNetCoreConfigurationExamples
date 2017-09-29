@@ -15,7 +15,8 @@ namespace AspNetCoreConfiguration
                 .UseKestrel() //使用Kestrel服务器
                 .UseContentRoot(Directory.GetCurrentDirectory()) //读出根目录下的配置文件和其它静态文件，比如image，css,js等
                 .UseIISIntegration() //匹配IIS和IISExpress
-                .UseStartup<Startup>()
+                .UseStartup("AspNetCoreConfiguration")
+                //.UseStartup<Startup>()
                 .Build();
 
             host.Run();

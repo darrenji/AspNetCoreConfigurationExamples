@@ -21,14 +21,27 @@ namespace AspNetCoreConfiguration.Controllers
             logger = log;
         }
         // GET: /<controller>/
-        public IActionResult Index()
+        public IActionResult Index(bool throwException=false)
         {
+            if (throwException)
+            {
+                throw new System.NullReferenceException();
+            }
+
             logger.LogDebug($"Handled {Request.Path} at uptime {uptime.Uptime}");
             var dic = new Dictionary<string, string> {
                 ["Message"] = "This is the Index action",
                 ["Uptime"] = $"{uptime.Uptime}ms"
             };
             return View(dic);
+        }
+
+        public ViewResult Error()
+        {
+            return View("Index", new Dictionary<string, string>
+            {
+                ["Message"] = "This is the error action"
+            });
         }
     }
 }

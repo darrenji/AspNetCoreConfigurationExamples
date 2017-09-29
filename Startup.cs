@@ -30,10 +30,15 @@ namespace AspNetCoreConfiguration
             //当环境变量设置为Staging的时候，这里就不执行
             if (env.IsDevelopment())
             {
-                app.UseMiddleware<ErrorMiddleware>();
-                app.UseMiddleware<BrowserTypeMiddleware>();
-                app.UseMiddleware<ShortCircuitMiddleware>();
-                app.UseMiddleware<ContentMiddleware>();
+                //app.UseMiddleware<ErrorMiddleware>();
+                //app.UseMiddleware<BrowserTypeMiddleware>();
+                //app.UseMiddleware<ShortCircuitMiddleware>();
+                //app.UseMiddleware<ContentMiddleware>();
+                app.UseDeveloperExceptionPage();
+                app.UseStatusCodePages();
+            } else
+            {
+                app.UseExceptionHandler("/Home/Error");
             }
             
 

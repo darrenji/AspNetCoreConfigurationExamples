@@ -24,12 +24,26 @@ namespace AspNetCoreConfiguration
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddConsole(LogLevel.Debug);
+            loggerFactory.AddDebug(LogLevel.Debug);
+
+            //当环境变量设置为Staging的时候，这里就不执行
+            if (env.IsDevelopment())
+            {
+                app.UseMiddleware<ErrorMiddleware>();
+                app.UseMiddleware<BrowserTypeMiddleware>();
+                app.UseMiddleware<ShortCircuitMiddleware>();
+                app.UseMiddleware<ContentMiddleware>();
+            }
             
-            app.UseMiddleware<ErrorMiddleware>();
-            app.UseMiddleware<BrowserTypeMiddleware>();
-            app.UseMiddleware<ShortCircuitMiddleware>();
-            app.UseMiddleware<ContentMiddleware>();
-            app.UseMvcWithDefaultRoute();
+
+            //app.UseMvcWithDefaultRoute();
+
+            app.UseMvc(routes => {
+                routes.MapRoute(
+                    name:"default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
            
         }
     }
